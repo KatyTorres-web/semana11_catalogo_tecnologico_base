@@ -1,3 +1,12 @@
+"""Configuración del panel de administración."""
 from django.contrib import admin
 
-# TODO (Ingrid): registrar el modelo Producto
+from .models import Producto
+
+
+@admin.register(Producto)
+class ProductoAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "categoria", "precio", "stock", "creado_en")
+    list_filter = ("categoria",)
+    search_fields = ("nombre",)
+    ordering = ("precio",)
