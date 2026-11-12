@@ -3,18 +3,27 @@
 {% block title %}Catálogo de Productos{% endblock %}
 
 {% block content %}
-<h2>Listado de Productos</h2>
-<!-- TODO: Iterar object_list o context_object_name -->
-<!-- TODO: Mostrar nombre (title), precio (currency filter), stock (if stock==0 mostrar "Agotado") -->
+<h2>Tecnología para tu día a día</h2>
+
 <div class="grid">
     {% for producto in object_list %}
-    <div class="card">
-        <h3>{{ producto.nombre|title }}</h3>
-        <p>Precio: S/ {{ producto.precio }}</p>
-        <!-- TODO: Condicional para stock -->
-    </div>
+        <article class="card">
+            <span class="categoria">{{ producto.categoria }}</span>
+
+            <h3>{{ producto.nombre|title }}</h3>
+
+            <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
+
+            {% if producto.stock > 0 %}
+                <span class="stock disponible">
+                    Disponible · {{ producto.stock }} unidades
+                </span>
+            {% else %}
+                <span class="stock agotado">Agotado</span>
+            {% endif %}
+        </article>
     {% empty %}
-        <p>No hay productos disponibles.</p>
+        <p class="vacio">No hay productos para mostrar.</p>
     {% endfor %}
 </div>
 {% endblock %}
