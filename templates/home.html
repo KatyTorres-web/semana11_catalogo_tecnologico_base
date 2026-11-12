@@ -3,16 +3,36 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <span class="categoria">Catálogo tecnológico · UNCP</span>
-    <h1>{{ titulo }}</h1>
-    <p>{{ descripcion }}</p>
-    <p>{{ total_productos }} productos · {{ total_categorias }} categorías para explorar.</p>
-    <a class="boton" href="{% url 'catalogo' %}">Explorar catálogo →</a>
+<section class="portada">
+    <h1>{{ titulo }} a TecnoCatálogo</h1>
+    <p>Laptops, smartphones, audio y accesorios en un solo lugar.</p>
+    <a href="{% url 'catalogo' %}" class="boton">
+        <i class="bi bi-grid"></i> Ver catálogo
+    </a>
 </section>
-<div class="grid beneficios">
-    <article class="card"><span class="categoria">01 · Variedad</span><h3>Tu próximo equipo</h3><p>Laptops, smartphones, audio y más en un solo lugar.</p></article>
-    <article class="card"><span class="categoria">02 · Claridad</span><h3>Compara con facilidad</h3><p>Precios ordenados y disponibilidad visible en cada producto.</p></article>
-    <article class="card"><span class="categoria">03 · A tu medida</span><h3>Encuentra lo que buscas</h3><p>Filtra por categoría y consulta solo productos con stock.</p></article>
+
+<section class="resumen">
+    <div class="resumen-item">
+        <i class="bi bi-box-seam"></i>
+        <div><strong>{{ total_productos }}</strong> producto{{ total_productos|pluralize }}</div>
+    </div>
+    <div class="resumen-item">
+        <i class="bi bi-tags"></i>
+        <div><strong>{{ total_categorias }}</strong> categoría{{ total_categorias|pluralize }}</div>
+    </div>
+</section>
+
+<h2 class="subtitulo"><i class="bi bi-clock-history"></i> Agregados recientemente</h2>
+<div class="grid">
+    {% for producto in ultimos %}
+    <article class="card">
+        <span class="categoria">{{ producto.categoria|upper }}</span>
+        <h3>{{ producto.nombre|title }}</h3>
+        <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
+        <p class="fecha"><i class="bi bi-calendar3"></i> {{ producto.creado_en|date:"d/m/Y H:i" }}</p>
+    </article>
+    {% empty %}
+    <p class="vacio">Todavía no hay productos registrados.</p>
+    {% endfor %}
 </div>
 {% endblock %}
