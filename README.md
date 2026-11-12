@@ -4,10 +4,10 @@
 
 ## Integrantes y roles
 
-| Integrante | Roles |
-|---|---|
-| Apellidos, Nombres | Arquitecta Django · QA & ORM Validator |
-| Apellidos, Nombres | Desarrolladora de Vistas · Ingeniera de Plantillas |
+| Integrante                        | Roles                                              |
+| --------------------------------- | -------------------------------------------------- |
+| RAMOS TACZA CAMILDA               | Arquitecta Django · QA & ORM Validator             |
+| TORRES AMBROSIO KATHERINE MEDALLY | Desarrolladora de Vistas · Ingeniera de Plantillas |
 
 ## Instalación
 
@@ -19,5 +19,3 @@ python manage.py migrate
 python manage.py poblar_productos
 python manage.py runserver
 ```
-
-<!-- TODO (Ingrid): diagrama MTV, 2 QuerySets + lazy evaluation, capturas -->

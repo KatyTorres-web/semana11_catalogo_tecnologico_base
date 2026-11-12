@@ -1,25 +1,54 @@
-<!DOCTYPE html>
+{% load static %}
+<!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Catálogo UNCP{% endblock %}</title>
-    <style>
-        body { font-family: system-ui, sans-serif; max-width: 1200px; margin: 0 auto; padding: 1rem; }
-        header, footer { background: #1e3a8a; color: white; padding: 1rem; margin-bottom: 2rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-        .card { border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; }
-    </style>
-</head>
-<body>
-    <header>
-        <nav>
-            <!-- TODO: Usar {% url 'home' %} y {% url 'catalogo' %} para enlaces -->
-            <a href="/">Inicio</a> | <a href="/catalogo/">Catálogo</a>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Catálogo UNCP{% endblock %} | TecnoCatálogo</title>
+
+    <!-- Íconos (Bootstrap Icons) -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- Estilos propios -->
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}" />
+  </head>
+  <body>
+    <header class="encabezado">
+      <div class="contenedor encabezado-fila">
+        <a href="{% url 'home' %}" class="marca">
+          <i class="bi bi-cpu"></i> TecnoCatálogo
+        </a>
+        <nav class="menu">
+          <a
+            href="{% url 'home' %}"
+            class="{% if request.resolver_match.url_name == 'home' %}activo{% endif %}"
+          >
+            <i class="bi bi-house-door"></i> Inicio
+          </a>
+          <a
+            href="{% url 'catalogo' %}"
+            class="{% if request.resolver_match.url_name == 'catalogo' %}activo{% endif %}"
+          >
+            <i class="bi bi-grid"></i> Catálogo
+          </a>
         </nav>
+      </div>
     </header>
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-    <footer>&copy; 2026 IS093A | Django MTV</footer>
-</body>
+
+    <main class="contenedor contenido">{% block content %}{% endblock %}</main>
+
+    <footer class="pie">
+      <div class="contenedor pie-fila">
+        <span
+          >&copy; {% now "Y" %} IS093A | Django MTV | RAMOS TACZA CAMILDA -
+          TORRES AMBROSIO KATHERINE MEDALLY</span
+        >
+        <span
+          ><i class="bi bi-mortarboard"></i> UNCP - Ingeniería de Sistemas</span
+        >
+      </div>
+    </footer>
+  </body>
 </html>

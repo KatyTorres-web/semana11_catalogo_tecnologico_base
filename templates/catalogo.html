@@ -3,27 +3,53 @@
 {% block title %}Catálogo de Productos{% endblock %}
 
 {% block content %}
-<h2>Tecnología para tu día a día</h2>
+<div class="catalogo-cabecera">
+    <div>
+        <h2><i class="bi bi-grid"></i> {{ titulo }}</h2>
+        <p class="detalle-lista">
+            {{ productos|length }} producto{{ productos|length|pluralize }}
+            {% if categoria_actual %} en <strong>{{ categoria_actual }}</strong>{% endif %}
+            {% if solo_stock %} &middot; solo con stock{% endif %}
+            &middot; ordenados por precio
+        </p>
+    </div>
+    {% if solo_stock %}
+        <a href="{% url 'catalogo' %}{% if categoria_actual %}?categoria={{ categoria_actual|urlencode }}{% endif %}"
+           class="boton boton-claro"><i class="bi bi-eye"></i> Mostrar todos</a>
+    {% else %}
+        <a href="{% url 'catalogo' %}?stock=1{% if categoria_actual %}&categoria={{ categoria_actual|urlencode }}{% endif %}"
+           class="boton boton-claro"><i class="bi bi-check2-circle"></i> Solo con stock</a>
+    {% endif %}
+</div>
+
+<!-- Filtro por categoría -->
+<div class="filtros">
+    <a href="{% url 'catalogo' %}" class="chip {% if not categoria_actual %}chip-activo{% endif %}">Todas</a>
+    {% for categoria in categorias %}
+        <a href="{% url 'catalogo' %}?categoria={{ categoria|urlencode }}"
+           class="chip {% if categoria == categoria_actual %}chip-activo{% endif %}">{{ categoria }}</a>
+    {% endfor %}
+</div>
 
 <div class="grid">
-    {% for producto in object_list %}
-        <article class="card">
-            <span class="categoria">{{ producto.categoria }}</span>
+    {% for producto in productos %}
+    <article class="card {% if producto.stock == 0 %}card-agotada{% endif %}">
+        <span class="categoria">{{ producto.categoria|upper }}</span>
+        <h3>{{ producto.nombre|title }}</h3>
+        <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
 
-            <h3>{{ producto.nombre|title }}</h3>
+        {% if producto.stock == 0 %}
+            <span class="estado estado-agotado"><i class="bi bi-x-circle"></i> Agotado</span>
+        {% elif producto.stock < 10 %}
+            <span class="estado estado-pocos"><i class="bi bi-exclamation-triangle"></i> Últimas {{ producto.stock }} unidades</span>
+        {% else %}
+            <span class="estado estado-ok"><i class="bi bi-check-circle"></i> {{ producto.stock }} en stock</span>
+        {% endif %}
 
-            <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
-
-            {% if producto.stock > 0 %}
-                <span class="stock disponible">
-                    Disponible · {{ producto.stock }} unidades
-                </span>
-            {% else %}
-                <span class="stock agotado">Agotado</span>
-            {% endif %}
-        </article>
+        <p class="fecha"><i class="bi bi-calendar3"></i> Registrado el {{ producto.creado_en|date:"d/m/Y" }}</p>
+    </article>
     {% empty %}
-        <p class="vacio">No hay productos para mostrar.</p>
+        <p class="vacio"><i class="bi bi-inbox"></i> No hay productos disponibles.</p>
     {% endfor %}
 </div>
 {% endblock %}

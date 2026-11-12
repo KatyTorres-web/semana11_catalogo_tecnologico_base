@@ -3,6 +3,36 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<!-- TODO (compañera): diseño de la página de bienvenida -->
-<h2>{{ titulo }}</h2>
+<section class="portada">
+    <h1>{{ titulo }} a TecnoCatálogo</h1>
+    <p>Laptops, smartphones, audio y accesorios en un solo lugar.</p>
+    <a href="{% url 'catalogo' %}" class="boton">
+        <i class="bi bi-grid"></i> Ver catálogo
+    </a>
+</section>
+
+<section class="resumen">
+    <div class="resumen-item">
+        <i class="bi bi-box-seam"></i>
+        <div><strong>{{ total_productos }}</strong> producto{{ total_productos|pluralize }}</div>
+    </div>
+    <div class="resumen-item">
+        <i class="bi bi-tags"></i>
+        <div><strong>{{ total_categorias }}</strong> categoría{{ total_categorias|pluralize }}</div>
+    </div>
+</section>
+
+<h2 class="subtitulo"><i class="bi bi-clock-history"></i> Agregados recientemente</h2>
+<div class="grid">
+    {% for producto in ultimos %}
+    <article class="card">
+        <span class="categoria">{{ producto.categoria|upper }}</span>
+        <h3>{{ producto.nombre|title }}</h3>
+        <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
+        <p class="fecha"><i class="bi bi-calendar3"></i> {{ producto.creado_en|date:"d/m/Y H:i" }}</p>
+    </article>
+    {% empty %}
+    <p class="vacio">Todavía no hay productos registrados.</p>
+    {% endfor %}
+</div>
 {% endblock %}
