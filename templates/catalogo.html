@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Catálogo de Productos{% endblock %}
+
+{% block content %}
+<h2>Listado de Productos</h2>
+<!-- TODO: Iterar object_list o context_object_name -->
+<!-- TODO: Mostrar nombre (title), precio (currency filter), stock (if stock==0 mostrar "Agotado") -->
+<div class="grid">
+    {% for producto in object_list %}
+    <div class="card">
+        <h3>{{ producto.nombre|title }}</h3>
+        <p>Precio: S/ {{ producto.precio }}</p>
+        <!-- TODO: Condicional para stock -->
+    </div>
+    {% empty %}
+        <p>No hay productos disponibles.</p>
+    {% endfor %}
+</div>
+{% endblock %}
