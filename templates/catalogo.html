@@ -3,10 +3,23 @@
 {% block title %}Catálogo de Productos{% endblock %}
 
 {% block content %}
-<h2>Tecnología para tu día a día</h2>
+<h2>{{ titulo }}</h2>
+<p>{{ total_productos }} productos · Ordenados por precio de menor a mayor.</p>
+<p>Fecha de consulta: {{ fecha_consulta|date:"d/m/Y" }}</p>
 
+<form class="filtros" method="get" action="{% url 'catalogo' %}">
+    <div class="categorias" aria-label="Filtrar por categoría">
+        <button class="filtro {% if not categoria_actual %}activo{% endif %}" type="submit" name="categoria" value="">Todas</button>
+        {% for categoria in categorias %}
+            <button class="filtro {% if categoria_actual == categoria %}activo{% endif %}" type="submit" name="categoria" value="{{ categoria }}">{{ categoria }}</button>
+        {% endfor %}
+    </div>
+    <label class="control-stock"><input type="checkbox" name="stock" value="1" {% if solo_stock %}checked{% endif %}> Solo con stock</label>
+    <button class="boton" type="submit" {% if categoria_actual %}name="categoria" value="{{ categoria_actual }}"{% endif %}>Aplicar filtros</button>
+    <a href="{% url 'catalogo' %}">Limpiar filtros</a>
+</form>
 <div class="grid">
-    {% for producto in object_list %}
+    {% for producto in productos %}
         <article class="card">
             <span class="categoria">{{ producto.categoria }}</span>
 
@@ -14,12 +27,14 @@
 
             <p class="precio">S/ {{ producto.precio|floatformat:2 }}</p>
 
-            {% if producto.stock > 0 %}
+            {% if producto.stock == 0 %}
+                <span class="stock agotado">Agotado</span>
+            {% elif producto.stock < 10 %}
+                <span class="stock pocas-unidades">Últimas {{ producto.stock }} unidades</span>
+            {% else %}
                 <span class="stock disponible">
                     Disponible · {{ producto.stock }} unidades
                 </span>
-            {% else %}
-                <span class="stock agotado">Agotado</span>
             {% endif %}
         </article>
     {% empty %}

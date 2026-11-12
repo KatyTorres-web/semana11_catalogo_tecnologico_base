@@ -1,20 +1,17 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Catálogo UNCP{% endblock %}</title>
-    <style>
-        body { font-family: system-ui, sans-serif; max-width: 1200px; margin: 0 auto; padding: 1rem; }
-        header, footer { background: #1e3a8a; color: white; padding: 1rem; margin-bottom: 2rem; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem; }
-        .card { border: 1px solid #e2e8f0; padding: 1rem; border-radius: 8px; }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
 </head>
 <body>
     <header>
         <nav>
-            <!-- TODO: Usar {% url 'home' %} y {% url 'catalogo' %} para enlaces -->
-            <a href="/">Inicio</a> | <a href="/catalogo/">Catálogo</a>
+            <a href="{% url 'home' %}">Inicio</a>
+            <a href="{% url 'catalogo' %}">Catálogo</a>
         </nav>
     </header>
     <main>
